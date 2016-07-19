@@ -9,6 +9,18 @@
 #    清零第一分区也就是uboot所在的分区
 # 方法:
 #    将相应的固件dd到对应的分区结点里面
+#
+# 分区信息表:(和patitons.tab/partitions_8g.tab从上到下对应)
+# patitions                 name
+# /dev/block/mmcblk0        bootloader(uboot)
+# /dev/block/mmcblk0p1      boot
+# /dev/block/mmcblk0p2      recovery
+# /dev/block/mmcblk0p3      misc
+# /dev/block/mmcblk0p4      reserved
+# /dev/block/mmcblk0p5      oeminfo
+# /dev/block/mmcblk0p6      system
+# /dev/block/mmcblk0p7      data
+
 
 function burn_recovery_image()
 {
@@ -37,8 +49,8 @@ function burn_uboot_image()
 function burn_floader_image()
 {
 	adb remount &&
-	adb push floader_m200_with_mbr_gpt_sleeplib_and_uboot.bin /system/ &&
-	adb shell dd if=/system/floader_m200_with_mbr_gpt_sleeplib_and_uboot.bin of=/dev/block/mmcblk0 &&
+	adb push floader_m200_with_mbr_gpt_and_sleeplib.bin  /system/ &&
+	adb shell dd if=/system/floader_m200_with_mbr_gpt_and_sleeplib.bin of=/dev/block/mmcblk0 &&
 	adb shell sync;
 }
 
