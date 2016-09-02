@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # llvm for cortex-m3 compile
 # ref: https://github.com/martinribelotta/cortex-m-llvm
@@ -17,9 +17,10 @@ git clone http://llvm.org/git/compiler-rt.git              &&
 cd ../../                                                  &&
 mkdir build                                                &&
 cd build                                                   &&
-cmake3                                \
-    -DCMAKE_BUILD_TYPE=Release        \
+cmake  \
+    -DCMAKE_BUILD_TYPE=Release  \
     -DCMAKE_INSTALL_PREFIX=/opt/llvm  \
-    -DLLVM_TARGETS_TO_BUILD="ARM;X86" \
+    -DLLVM_TARGETS_TO_BUILD="Mips;ARM;X86" \
     -DLLVM_ENABLE_PIC=ON ../llvm                           &&
-make
+make -j8                                                   &&
+sudo make install
