@@ -14,7 +14,9 @@ cd clang                                                   &&
 git reset --hard c80ac49fb00ac4b76385011842f08bdb7ca2a323  &&
 cd ../../projects/                                         &&
 git clone http://llvm.org/git/compiler-rt.git              &&
-cd ../../                                                  &&
+cd compiler-rt                                             &&
+git reset --hard b64139a2283919f60961bbd3cc923d37769acaa0  &&
+cd ../../../                                               &&
 mkdir build                                                &&
 cd build                                                   &&
 cmake  \
@@ -24,3 +26,4 @@ cmake  \
     -DLLVM_ENABLE_PIC=ON ../llvm                           &&
 make -j8                                                   &&
 sudo make install
+
