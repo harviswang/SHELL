@@ -1,0 +1,9 @@
+#!/bin/sh
+# usage: miv file.c:88
+#        equal to 'vim file.c +88'
+
+str=$1
+file=`echo $str | cut -d \: -f 1`
+line=`echo $str | cut -d \: -f 2`
+vim $file +$line
+

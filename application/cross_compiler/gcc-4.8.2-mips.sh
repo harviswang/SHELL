@@ -31,13 +31,15 @@ make
 sudo make install
 
 
-# get gmp/mpc/mpfr
+# get gmp/mpc/mpfr/isl
 cd $WDIR/${TARGET}-toolchain
 #wget ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-4.3.2.tar.bz2
 #wget ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-0.8.1.tar.gz
 #wget ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-2.4.2.tar.bz2
 
 # compile gmp-4.3.2.tar.bz2
+# sudo ln -s /usr/local/share/cross-compiler/include/gmp.h /usr/include/gmp.h
+# sudo ln -s /usr/local/share/cross-compiler/lib/libgmp.a /usr/lib/libgmp.a
 cd $WDIR/${TARGET}-toolchain
 tar xvf gmp-4.3.2.tar.bz2
 cd gmp-4.3.2/
@@ -71,7 +73,7 @@ sudo make install
 cd $WDIR/${TARGET}-toolchain
 tar xvf gcc-4.8.2.tar.bz2 
 mkdir build-gcc-bootstrap && cd build-gcc-bootstrap
-../gcc-4.8.2/configure --target=$TARGET --prefix=$PREFIX --with-mpfr=$PREFIX --with-mpc=$PREFIX --with-gmp=$PREFIX --enable-languages=c --without-headers   --with-gnu-ld --with-gnu-as --disable-shared --disable-threads --disable-libmudflap --disable-libgomp --disable-libssp --disable-libquadmath --disable-libatomic
+../gcc-4.8.2/configure --target=$TARGET --prefix=$PREFIX --with-mpfr=$PREFIX --with-mpc=$PREFIX --with-gmp=$PREFIX --enable-languages=c,c++ --without-headers   --with-gnu-ld --with-gnu-as --disable-shared --disable-threads --disable-libmudflap --disable-libgomp --disable-libssp --disable-libquadmath --disable-libatomic
 #CC=gcc48 ../gcc-4.8.2/configure --target=$TARGET --prefix=$PREFIX --with-mpfr=$PREFIX --with-mpc=$PREFIX --with-gmp=$PREFIX --enable-languages=c --without-headers   --with-gnu-ld --with-gnu-as --disable-shared --disable-threads --disable-libmudflap --disable-libgomp --disable-libssp --disable-libquadmath --disable-libatomic
 make -j4
 sudo make install
