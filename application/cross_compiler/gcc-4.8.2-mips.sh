@@ -27,8 +27,8 @@ tar xjf binutils-2.24.tar.bz2
 mkdir build-binutils && cd build-binutils
 ../binutils-2.24/configure --target=$TARGET --prefix=$PREFIX
 #CC=gcc48 ../binutils-2.24/configure --target=$TARGET --prefix=$PREFIX
-make
-sudo make install
+gmake
+sudo gmake install
 
 
 # get gmp/mpc/mpfr/isl
@@ -43,7 +43,7 @@ cd $WDIR/${TARGET}-toolchain
 cd $WDIR/${TARGET}-toolchain
 tar xvf gmp-4.3.2.tar.bz2
 cd gmp-4.3.2/
-./configure --prefix=$PREFIX
+CC=clang ./configure --prefix=$PREFIX
 #CC=gcc48 ./configure --prefix=$PREFIX
 make
 sudo make install
@@ -73,10 +73,10 @@ sudo make install
 cd $WDIR/${TARGET}-toolchain
 tar xvf gcc-4.8.2.tar.bz2 
 mkdir build-gcc-bootstrap && cd build-gcc-bootstrap
-../gcc-4.8.2/configure --target=$TARGET --prefix=$PREFIX --with-mpfr=$PREFIX --with-mpc=$PREFIX --with-gmp=$PREFIX --enable-languages=c,c++ --without-headers   --with-gnu-ld --with-gnu-as --disable-shared --disable-threads --disable-libmudflap --disable-libgomp --disable-libssp --disable-libquadmath --disable-libatomic
+CC=clang ../gcc-4.8.2/configure --target=$TARGET --prefix=$PREFIX --with-mpfr=$PREFIX --with-mpc=$PREFIX --with-gmp=$PREFIX --enable-languages=c --without-headers   --with-gnu-ld --with-gnu-as --disable-shared --disable-threads --disable-libmudflap --disable-libgomp --disable-libssp --disable-libquadmath --disable-libatomic
 #CC=gcc48 ../gcc-4.8.2/configure --target=$TARGET --prefix=$PREFIX --with-mpfr=$PREFIX --with-mpc=$PREFIX --with-gmp=$PREFIX --enable-languages=c --without-headers   --with-gnu-ld --with-gnu-as --disable-shared --disable-threads --disable-libmudflap --disable-libgomp --disable-libssp --disable-libquadmath --disable-libatomic
-make -j4
-sudo make install
+gmake -j4
+sudo gmake install
 
 # compile gdb-6.3.tar.bz2
 cd $WDIR/${TARGET}-toolchain
@@ -94,12 +94,19 @@ tar xjf gdb-7.8.tar.gz
 mkdir build-gdb && cd build-gdb
 #export C_INCLUDE_PATH=/usr/include:/usr/local/include
 #export LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
-CC=gcc48 ../gdb-7.8/configure --target=$TARGET --prefix=$PREFIX
-make -j4
-sudo make install
+CC=clang ../gdb-7.8/configure --target=$TARGET --prefix=$PREFIX
+#CC=gcc48 ../gdb-7.8/configure --target=$TARGET --prefix=$PREFIX
+gmake -j4
+sudo gmake install
 
 # create soft link for libgmp.so.3/libmpfr.so.1/libmpc.so.2/
 # 如果能使用静态库链接就不需要创建软链接了, 还不知道怎么做?
 sudo ln -s $PREFIX/lib/libgmp.so.3.5.2 /lib64/libgmp.so.3
 sudo ln -s $PREFIX/lib/mpfr.so.1.2.2 /lib64/libmpfr.so.1
 sudo ln -s $PREFIX/lib/libmpc.so.2.0.0 /lib64/libmpc.so.2
+
+# compile glibc-2.17
+cd $WDIR/${TARGET}-toolchain
+tar xvf glibc-2.17.tar.xz
+mkdir build-glibc && cd build-glibc
+CC=mipsel-unknown-linux-gnu-gcc ../glibc-2.17/configure --prefix=$PREFIX --with-headers=/home/harvis/opensource/linux-3.10.99/include --enable-kernel=3.10.99 --with-binutils=/usr/local/share/cross-compiler/mipsel-unknown-linux-gnu/bin --enable-add-ons --build=mipsel-unknown-linux-gnu --host=mipsel-unknown-linux-gnu

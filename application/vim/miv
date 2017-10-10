@@ -1,9 +1,18 @@
 #!/bin/sh
 # usage: miv file.c:88
 #        equal to 'vim file.c +88'
+#        miv file.c
+#        equal to vim file.c
 
 str=$1
-file=`echo $str | cut -d \: -f 1`
-line=`echo $str | cut -d \: -f 2`
-vim $file +$line
+with_comma=$(echo $str | grep ":")
+
+if [ "$with_comma" == "" ]; then
+    file=$str
+    vim $file
+else
+    file=`echo $str | cut -d \: -f 1`
+    line=`echo $str | cut -d \: -f 2`
+    vim $file +$line
+fi
 

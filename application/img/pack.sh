@@ -7,7 +7,7 @@
 
 function unpack () {
     ##unmkbootimg /path/to/boot.img
-    UNMKBOOTIMG=~/B/opensource/bootimg-tools/mkbootimg/unmkbootimg
+    UNMKBOOTIMG=~/opensource/bootimg-tools/mkbootimg/unmkbootimg
     echo "${UNMKBOOTIMG} $1"
     ${UNMKBOOTIMG} --input $1
 
@@ -28,7 +28,7 @@ function unpack () {
 }
 
 function pack () {
-    MKBOOTIMG=~/B/opensource/bootimg-tools/mkbootimg/mkbootimg
+    MKBOOTIMG=~/opensource/bootimg-tools/mkbootimg/mkbootimg
     
     # rmadisk/ -> ramdisk.cpio
     cd ramdisk/
@@ -43,4 +43,14 @@ function pack () {
     
     # ramdisk.cpio.gz -> ramdisk.img
     #mv ramdisk.cpio.gz ramdisk.img
+}
+
+function ramdisk () {
+    # rmadisk/ -> ramdisk.cpio
+    cd ramdisk/
+    find . | cpio -H newc -o > ../ramdisk.cpio
+    cd ..
+
+    # ramdisk.cpio -> ramdisk.cpio.gz
+    gzip ramdisk.cpio
 }
